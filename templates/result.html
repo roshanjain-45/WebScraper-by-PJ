@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Review Page</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="table-users">
+   <div class="header">Reviews</div>
+
+   <table cellspacing="0">
+      <tr>
+         <th>Product</th>
+         <th>Price</th>
+      </tr>
+      {% for item in products %}
+      <tr>
+          <td>{{ item['Product Name'] }}</td>
+          <td>{{ item['Prices'] }}</td>
+      </tr>
+      {% endfor %}
+   </table>
+</div>
+{% endblock %}
