@@ -6,20 +6,24 @@
 {% endblock %}
 
 {% block body %}
-<div class="table-users">
-   <div class="header">Reviews</div>
+{% if error %}
+    <p style="color: red; text-align: center;">{{ error }}</p>
+{% else %}
+    <div class="table-users">
+        <div class="header">Reviews</div>
+        <table cellspacing="0">
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+            </tr>
+            {% for item in products %}
+            <tr>
+                <td>{{ item['Product Name'] }}</td>
+                <td>{{ item['Prices'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}
 
-   <table cellspacing="0">
-      <tr>
-         <th>Product</th>
-         <th>Price</th>
-      </tr>
-      {% for item in products %}
-      <tr>
-          <td>{{ item['Product Name'] }}</td>
-          <td>{{ item['Prices'] }}</td>
-      </tr>
-      {% endfor %}
-   </table>
-</div>
 {% endblock %}

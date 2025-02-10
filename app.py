@@ -1,16 +1,7 @@
 from flask import Flask, render_template, request
-import pandas as pd
+from scraper import scrape_amazon
 
 app = Flask(__name__)
-
-# Load data from CSV
-def load_data():
-    try:
-        df = pd.read_csv("amazon_products.csv")
-        return df.to_dict(orient="records")
-    except Exception as e:
-        print(f"Error loading data: {e}")
-        return []
 
 @app.route("/")
 def index():
@@ -18,10 +9,17 @@ def index():
 
 @app.route("/review", methods=["POST"])
 def review():
-    search_query = request.form.get("content", "").lower()
-    data = load_data()
-    filtered_data = [item for item in data if search_query in item["Product Name"].lower()]
-    return render_template("result.html", products=filtered_data)
+    search_query = request.form.get("content", "").strip()
+    
+    if not search_query:
+        return render_template("result.html", products=[], error="Please enter a valid product name.")
+
+    products = scrape_amazon(search_query)  # Fetch new data for each search
+
+    if not products:
+        return render_template("result.html", products=[], error=f"No results found for '{search_query}'.")
+
+    return render_template("result.html", products=products)
 
 if __name__ == "__main__":
     app.run(debug=True)
